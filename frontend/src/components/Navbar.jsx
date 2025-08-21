@@ -4,6 +4,8 @@ import { IoIosCart } from "react-icons/io";
 import loginService from "../services/login.service";
 // Import the custom context hook
 import { useAuth } from "../../src/context/AuthContext";
+// Import the logo image
+import Logo from "../../public/GebeyaX.png";
 
 const Navbar = () => {
   const { getCartCount } = useCart();
@@ -22,11 +24,13 @@ const Navbar = () => {
   return (
     <nav className="bg-white shadow-lg border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">E</span>
+            <div className="w-20 h-18 rounded-lg flex items-center justify-center">
+              
+                <img src={Logo} alt="Logo" className="" />
+             
             </div>
             <span className="text-xl font-bold text-gray-800">E-Store</span>
           </Link>
