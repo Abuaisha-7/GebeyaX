@@ -1,5 +1,7 @@
 import { useCart } from '../context/CartContext';
 import { Link } from 'react-router-dom';
+// Import from the env 
+const api_url = import.meta.env.VITE_API_URL;
 
 const Cart = () => {
   const { cart, removeFromCart, updateQuantity, getCartTotal } = useCart();
@@ -35,8 +37,8 @@ const Cart = () => {
                 {/* Product Image */}
                 <div className="flex-shrink-0">
                   <img
-                    src={item.image}
-                    alt={item.name}
+                   src={`${api_url}/uploads/${item.image}`}
+                   alt={item.name}
                     className="w-20 h-20 object-cover rounded-lg"
                   />
                 </div>

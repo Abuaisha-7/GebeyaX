@@ -2,6 +2,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useCart } from '../context/CartContext';
 import productService from '../services/product.service';
+// Import the custom context hook
+import { useAuth } from "../context/AuthContext";
 // Import from the env 
 const api_url = import.meta.env.VITE_API_URL;
 
@@ -11,6 +13,8 @@ const ProductDetails = () => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
+  // Use the custom hook to access the data in the context
+  const { isLogged } = useAuth();
 
 // Fetch product from an API
 useEffect(() => {
@@ -38,8 +42,13 @@ useEffect(() => {
   }
 
   const handleAddToCart = () => {
-    addToCart(product);
-    // You could add a toast notification here
+    if (isLogged) {
+      addToCart(product);
+      // You could add a toast notification here
+      navigate('/cart');
+    } else {
+      navigate('/login');
+    }
   };
 
   return (
@@ -93,6 +102,7 @@ useEffect(() => {
               </div>
 
               {/* Add to Cart Button */}
+             
               <button
                 onClick={handleAddToCart}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition-colors duration-200 mb-4"

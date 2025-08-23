@@ -44,7 +44,8 @@ const Navbar = () => {
               Home
             </Link>
             <Link
-              to="/cart"
+            
+              to={isLogged ? "/cart" : "/login"}
               className="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors relative"
             >
               <IoIosCart size={25} />
