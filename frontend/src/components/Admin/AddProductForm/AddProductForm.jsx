@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-// import employee.service.js 
-import productService from '../../../services/product.service';
-// Import the useAuth hook 
+// import employee.service.js
+import productService from "../../../services/product.service";
+// Import the useAuth hook
 import { useAuth } from "../../../context/AuthContext";
+import { FadeLoader } from "react-spinners";
+import { Navigate } from "react-router-dom";
 
 export default function AddProduct() {
+  const [loading, setLoading] = useState(false);
   const [product, setProduct] = useState({
     name: "",
     price: "",
@@ -21,12 +24,12 @@ export default function AddProduct() {
     { value: "4", label: "Furniture" },
   ];
 
-   // Create a variable to hold the user's token
-   let loggedinUser = '';
-   const { user } = useAuth();
-    if (user && user.token) {
+  // Create a variable to hold the user's token
+  let loggedinUser = "";
+  const { user } = useAuth();
+  if (user && user.token) {
     loggedinUser = user.token;
-    }
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -42,10 +45,18 @@ export default function AddProduct() {
   };
   // Log the image file name
   // console.log("Image file name:", product.image);
-console.log(product.name, product.price, product.description, product.category, product.quantity, product.image);
+  console.log(
+    product.name,
+    product.price,
+    product.description,
+    product.category,
+    product.quantity,
+    product.image
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
 
     // Use FormData for file + text upload
     const formData = new FormData();
@@ -58,10 +69,11 @@ console.log(product.name, product.price, product.description, product.category, 
 
     console.log("Form data ready to send:", formData);
     console.log(formData.get("image")); // Example to check if data is set correctly
-      // Pass the form data to the service 
-    productService.addProduct(formData, loggedinUser)
+    // Pass the form data to the service
+    productService
+      .addProduct(formData, loggedinUser)
       .then((response) => response.json())
-      .then((data) =>  {
+      .then((data) => {
         console.log(data.message);
         // Reset the form after successful submission
         setProduct({
@@ -72,11 +84,13 @@ console.log(product.name, product.price, product.description, product.category, 
           quantity: "",
           image: null,
         });
+        setLoading(false);
+        alert("Product added successfully!");
+       Navigate("/admin/products");
       })
       .catch((data) => {
         console.error(data.message);
       });
-
   };
 
   return (
@@ -172,8 +186,6 @@ console.log(product.name, product.price, product.description, product.category, 
           <input
             type="file"
             accept="image/*"
-           
-
             onChange={handleImageChange}
             className="w-full text-sm text-gray-500
                        file:mr-4 file:py-2 file:px-4
@@ -193,12 +205,18 @@ console.log(product.name, product.price, product.description, product.category, 
         </div>
 
         {/* Submit */}
-        <button
-          type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-medium transition-colors"
-        >
-          Add Product
-        </button>
+        {loading ? (
+          <div className="w-full flex justify-center">
+            <FadeLoader color="#3018aa" />
+          </div>
+        ) : (
+          <button
+            type="submit"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-medium transition-colors"
+          >
+            Add Product
+          </button>
+        )}
       </form>
     </div>
   );

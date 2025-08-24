@@ -1,86 +1,90 @@
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import registerService from '../services/register.service';
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import registerService from "../services/register.service";
+import { FadeLoader } from "react-spinners";
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    confirmPassword: ''
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
-  const [serverError, setServerError] = useState('');
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [serverError, setServerError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-     // Handle client side validations  
-     let valid = true; // Flag to check if all validations pass
-    setError('');
-    setSuccess('');
-    
+    // Handle client side validations
+    let valid = true; // Flag to check if all validations pass
+    setError("");
+    setSuccess("");
+   
+
     // Email is required
     if (!formData.email) {
-      setError('Email is required');
-    } else if (!formData.email.includes('@')) {
-      setError('Invalid email format');
+      setError("Email is required");
+      
+    } else if (!formData.email.includes("@")) {
+      setError("Invalid email format");
     } else {
       const regex = /^\S+@\S+\.\S+$/;
       if (!regex.test(formData.email)) {
-        setError('Invalid email format');
+        setError("Invalid email format");
         valid = false;
       } else {
-        setError('');
+        setError("");
       }
-      }
+    }
     // Validation
     if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
+      setError("Passwords do not match");
       valid = false;
     }
 
     if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters long');
+      setError("Password must be at least 6 characters long");
       valid = false;
     }
 
-
-
-      // If the form is not valid, do not submit 
+    // If the form is not valid, do not submit
     if (!valid) {
       return;
     }
-
-    // Pass the form data to the service 
+ setLoading(true);
+    // Pass the form data to the service
     const newUser = registerService.createUser(formData);
-    newUser.then((response) => response.json())
+    newUser
+      .then((response) => response.json())
       .then((data) => {
         // console.log(data);
         // If Error is returned from the API server, set the error message
         if (data.error) {
-          setServerError(data.error)
+          setServerError(data.error);
+          setLoading(false);
         } else {
-          // Handle successful response 
+          // Handle successful response
           setSuccess(true);
-          setServerError('')
-          // Redirect to the employees page after 2 seconds 
-          // For now, just redirect to the home page 
+          setServerError("");
+          // Redirect to the employees page after 2 seconds
+          // For now, just redirect to the home page
           setTimeout(() => {
             // window.location.href = '/admin/employees';
             // window.location.href = '/';
-            navigate('/login');
+            navigate("/login");
           }, 2000);
         }
       })
-      // Handle Catch 
+      // Handle Catch
       .catch((error) => {
         const resMessage =
           (error.response &&
@@ -89,35 +93,10 @@ const Register = () => {
           error.message ||
           error.toString();
         setServerError(resMessage);
+        setLoading(false);
       });
-  }
-console.log(error)
-
-  //   // Get existing users
-  //   const users = JSON.parse(localStorage.getItem('users') || '[]');
-    
-  //   // Check if username already exists
-  //   if (users.find(u => u.username === formData.username)) {
-  //     setError('Username already exists');
-  //     return;
-  //   }
-
-  //   // Add new user
-  //   const newUser = {
-  //     username: formData.username,
-  //     password: formData.password
-  //   };
-
-  //   users.push(newUser);
-  //   localStorage.setItem('users', JSON.stringify(users));
-
-  //   setSuccess('Account created successfully! Redirecting to login...');
-    
-  //   // Redirect to login after 2 seconds
-  //   setTimeout(() => {
-  //     navigate('/login');
-  //   }, 2000);
-  // };
+  };
+  // console.log(error)
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -130,7 +109,7 @@ console.log(error)
             Create your account
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Or{' '}
+            Or{" "}
             <Link
               to="/login"
               className="font-medium text-blue-600 hover:text-blue-500"
@@ -139,12 +118,12 @@ console.log(error)
             </Link>
           </p>
         </div>
-        
+
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
             <div>
               <label htmlFor="username" className="sr-only">
-                Username
+                email
               </label>
               <input
                 id="email"
@@ -190,9 +169,7 @@ console.log(error)
           </div>
 
           {error && (
-            <div className="text-red-600 text-sm text-center">
-              {error}
-            </div>
+            <div className="text-red-600 text-sm text-center">{error}</div>
           )}
 
           {serverError && (
@@ -202,18 +179,22 @@ console.log(error)
           )}
 
           {success && (
-            <div className="text-green-600 text-sm text-center">
-              {success}
-            </div>
+            <div className="text-green-600 text-sm text-center">{success}</div>
           )}
 
           <div>
-            <button
-              type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
-            >
-              Create Account
-            </button>
+            {loading ? (
+              <div className="w-full flex justify-center">
+                <FadeLoader color="#3018aa" />
+              </div>
+            ) : (
+              <button
+                type="submit"
+                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+              >
+                Create Account
+              </button>
+            )}
           </div>
 
           <div className="text-center">

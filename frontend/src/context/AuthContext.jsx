@@ -20,6 +20,7 @@ export const AuthProvider = ( { children }) => {
   useEffect(() => {
     // Retrieve the logged in user from local storage
     const loggedInuser = getAuth();
+
     // console.log(loggedInuser);
     loggedInuser.then((response) => {
       // console.log(response);

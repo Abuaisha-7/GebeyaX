@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useCart } from "../context/CartContext";
+import { useCart } from "../context/useCart";
 import { IoIosCart } from "react-icons/io";
 import loginService from "../services/login.service";
 // Import the custom context hook
@@ -19,6 +19,8 @@ const Navbar = () => {
   const logOut = () => {
     // Call the logout function from the login service
     loginService.logOut();
+    // refresh the page
+    window.location.reload();
     // Set the isLogged state to false
     setIsLogged(false);
   };
@@ -55,7 +57,7 @@ const Navbar = () => {
             </Link>
             <Link
             
-              to={isLogged ? "/cart" : "/login"}
+              to={isLogged ? `/cart/${user.user_id}` : "/login"}
               className="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors relative"
             >
               <IoIosCart size={25} />

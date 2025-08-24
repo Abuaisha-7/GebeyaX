@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { CartProvider } from './context/CartContext';
+import CartProvider  from './context/CartContext';
 
 
 import Navbar from './components/Navbar';
@@ -10,6 +10,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Admin from './pages/admin/Admin';
 import AddProduct from './pages/admin/AddProduct';
+import Products from './pages/admin/Products';
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -21,14 +23,16 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/product/:id" element={<ProductDetails />} />
-              <Route path="/cart" element={<Cart />} />
+              <Route path="/cart/:userId" element={<Cart />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/admin/add-product" element={<AddProduct />} />
               {/* Add other admin routes as needed */}
+              <Route path='/admin/products' element={<Products />} />
             </Routes>
           </main>
+          <Footer/>
         </div>
       </Router>
     </CartProvider>

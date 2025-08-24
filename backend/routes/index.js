@@ -10,6 +10,8 @@ const registerRouter = require('./register.routes')
 const loginRouter = require('./login.routes')
 // Import the product router
 const productRouter = require('./product.routes');
+// Import the cart router
+const cartRouter = require('./cart.routes');
 
 // Add the install router to the middleware chain
 router.use(installRouter);
@@ -19,6 +21,8 @@ router.use(registerRouter);
 router.use(loginRouter);
 // Add the product router to the middleware chain
 router.use(productRouter);
+// Add the cart router to the middleware chain
+router.use(cartRouter);
 
 
 // Export the router

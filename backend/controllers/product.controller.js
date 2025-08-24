@@ -26,7 +26,7 @@ const addProduct = async (req, res) => {
 const getProducts = async (req, res) => {
   try {
     const products = await productService.getProducts();
-   console.log("Products fetched:", products);
+  //  console.log("Products fetched:", products);
     if (products) {
       res.status(200).json(products);
     } else {

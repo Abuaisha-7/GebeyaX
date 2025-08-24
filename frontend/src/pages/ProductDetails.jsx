@@ -1,7 +1,9 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { useCart } from '../context/CartContext';
+import { useCart } from '../context/useCart.js';
 import productService from '../services/product.service';
+// import the cart service
+import cartService from '../services/cart.service.jsx';
 // Import the custom context hook
 import { useAuth } from "../context/AuthContext";
 // Import from the env 
@@ -10,20 +12,38 @@ const api_url = import.meta.env.VITE_API_URL;
 const ProductDetails = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
+  const [cartItems, setCartItems] = useState([]);
   const navigate = useNavigate();
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
   // Use the custom hook to access the data in the context
-  const { isLogged } = useAuth();
+  const { isLogged, user } = useAuth();
+  // console.log(user.user_id)
+   // Create a variable to hold the user's token
+  let loggedinUser = "";
+  if (user && user.token) {
+    loggedinUser = user.token;
+  };
 
 // Fetch product from an API
 useEffect(() => {
   async function fetchProduct() {
       const data = await productService.getProductById(id);
       setProduct(data);
+
     }
     fetchProduct();
 })
+// Fetch cart items from an API
+// useEffect(() => {
+//   async function fetchCartItems() {
+//       const data = await cartService.getCartItemsByUserId(user.user_id, loggedinUser);
+//       console.log("cart items", data)
+//       setCartItems(data);
+//     }
+//     fetchCartItems();
+// }, [loggedinUser, user.user_id])
+
 
   if (!product) {
     return (
@@ -40,12 +60,27 @@ useEffect(() => {
       </div>
     );
   }
+const formData = {
+  user_id: user.user_id,
+  product_id: product.id,
+  quantity: quantity
 
+}
+// console.log("cart items",cartItems)
   const handleAddToCart = () => {
     if (isLogged) {
-      addToCart(product);
+      // addToCart(cartItems);
+      // Call the addToCart function from cartService
+      const newProduct = cartService.addToCart(formData, loggedinUser)
+    newProduct.then(response => response.json())
+    .then(data => { console.log(data);
+    })
+    .catch(error => { console.error('Error:', error); });
+      console.log('Product added to cart:', product);
+
       // You could add a toast notification here
-      navigate('/cart');
+      navigate(`/cart/${user.user_id}`, { replace: true });
+      window.location.reload();
     } else {
       navigate('/login');
     }

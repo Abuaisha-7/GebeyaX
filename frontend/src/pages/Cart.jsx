@@ -1,4 +1,4 @@
-import { useCart } from '../context/CartContext';
+import { useCart } from '../context/useCart';
 import { Link } from 'react-router-dom';
 // Import from the env 
 const api_url = import.meta.env.VITE_API_URL;

@@ -4,7 +4,7 @@ const getAuth = async () => {
   if (user && user.user_token) {
     const decodedToken = await decodeTokenPayload(user.user_token);
     user.user_role = decodedToken.role;
-    user.user_id = decodedToken.id;
+    user.user_id = decodedToken.user_id;
     user.user_email = decodedToken.email;
     return user;
   } else {

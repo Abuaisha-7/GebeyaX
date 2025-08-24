@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import loginService from "../services/login.service";
+import { FadeLoader } from "react-spinners";
 
 const Login = () => {
 
@@ -10,6 +11,7 @@ const Login = () => {
   });
   const [error, setError] = useState("");
   const [serverError, setServerError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -23,6 +25,7 @@ const Login = () => {
     e.preventDefault();
     setError("");
     setServerError("");
+    setLoading(true);
     // Handle client side validations
     let valid = true; // Flag to check if all validations pass
 
@@ -35,6 +38,7 @@ const Login = () => {
       const regex = /^\S+@\S+\.\S+$/;
       if (!regex.test(formData.email)) {
         setError("Invalid email format");
+        setLoading(false);
         valid = false;
       } else {
         setError("");
@@ -44,6 +48,7 @@ const Login = () => {
     // Password has to be at least 6 characters long
     if (formData.password.length < 6) {
       setError("Password must be at least 6 characters long");
+      setLoading(false);
       valid = false;
     }
 
@@ -79,6 +84,7 @@ const Login = () => {
         } else {
           // Show an error message
           setServerError(response.message);
+          setLoading(false);
         }
       })
       .catch((err) => {
@@ -153,12 +159,21 @@ const Login = () => {
           )}
 
           <div>
-            <button
+            {loading ? ( <div className="w-full flex justify-center">
+    <FadeLoader color="#3018aa" />
+ </div>) : (
+  <button
               type="submit"
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+
             >
               Sign in
+             
+
+              
             </button>
+ ) }
+          
           </div>
 
           <div className="text-center">
