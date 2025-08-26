@@ -10,6 +10,10 @@ const cartController = require('../controllers/cart.controller');
 router.post("/api/cart",cartController.addToCart);
 // Create a route to handle the get cart items request on get
 router.get("/api/cart/:userId",cartController.getCartItemsByUserId);
+// Create a route to handle the remove cart item request on delete
+router.delete("/api/cart/:userId/:productId",cartController.removeCartItem);
+// Create a route to handle the update cart item request on put
+router.put("/api/cart",cartController.updateCart);
 
 // Export the router
 module.exports = router;

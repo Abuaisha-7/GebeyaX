@@ -37,10 +37,57 @@ const getCartItemsByUserId = async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
     }
+// Handle the remove cart item request
+const removeCartItem = async (req, res) => {
+    console.log(req.params);
+     const { userId, productId } = req.params;
+    try {
+       
+        console.log("Remove cart item request by user:", userId, "for product:", productId);
+        
+        const response = await cartService.removeCartItem(userId, productId);
+        
+        if (response) {
+        res.status(200).json({ message: "Product removed from cart successfully" });
+        } else {
+        res.status(400).json({ message: "Failed to remove product from cart" });
+        }
+    } catch (error) {
+        console.error("Error removing cart item:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+    }
+
+// Handle the update cart item request
+const updateCart = async (req, res) => {
+     const { user_id, product_id, quantity } = req.body;
+  if (!user_id || !product_id || !quantity) {
+    return res.status(400).json({ status: "error", message: "Missing required fields" });
+  }
+    try {
+       
+        
+        
+        console.log("Update cart request by user:", user_id, "for product:", product_id, "with quantity:", quantity);
+        
+        const response = await cartService.updateCartItem(user_id, product_id, quantity);
+        
+        if (response) {
+        res.status(200).json({ message: "Cart updated successfully" });
+        } else {
+        res.status(400).json({ message: "Failed to update cart" });
+        }
+    } catch (error) {
+        console.error("Error updating cart:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+    }
 
 // Export the functions
 module.exports = {
     addToCart,
-    getCartItemsByUserId
+    getCartItemsByUserId,
+    removeCartItem,
+    updateCart
 }
 

@@ -36,13 +36,15 @@ function CartProvider({ children }) {
     });
   };
 
-  const removeFromCart = (id) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== id));
+  const removeFromCart = (userId, productId) => {
+    cartService.removeCartItem(userId, productId, user.token);
+    setCart((prevCart) => prevCart.filter((item) => item.id !== productId));
   };
 
-  const updateQuantity = (id, quantity) => {
+  const updateQuantity = (userId, productId, quantity) => {
+    cartService.updateCart(userId,productId,quantity, user.token);
     setCart((prevCart) =>
-      prevCart.map((item) => (item.id === id ? { ...item, quantity } : item))
+      prevCart.map((item) => (item.id === productId ? { ...item, quantity } : item))
     );
   };
 

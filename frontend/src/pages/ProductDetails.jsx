@@ -1,12 +1,12 @@
-import { useParams, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { useCart } from '../context/useCart.js';
-import productService from '../services/product.service';
+import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useCart } from "../context/useCart.js";
+import productService from "../services/product.service";
 // import the cart service
-import cartService from '../services/cart.service.jsx';
+import cartService from "../services/cart.service.jsx";
 // Import the custom context hook
 import { useAuth } from "../context/AuthContext";
-// Import from the env 
+// Import from the env
 const api_url = import.meta.env.VITE_API_URL;
 
 const ProductDetails = () => {
@@ -19,39 +19,39 @@ const ProductDetails = () => {
   // Use the custom hook to access the data in the context
   const { isLogged, user } = useAuth();
   // console.log(user.user_id)
-   // Create a variable to hold the user's token
+  // Create a variable to hold the user's token
   let loggedinUser = "";
   if (user && user.token) {
     loggedinUser = user.token;
-  };
+  }
 
-// Fetch product from an API
-useEffect(() => {
-  async function fetchProduct() {
+  // Fetch product from an API
+  useEffect(() => {
+    async function fetchProduct() {
       const data = await productService.getProductById(id);
       setProduct(data);
-
     }
     fetchProduct();
-})
-// Fetch cart items from an API
-// useEffect(() => {
-//   async function fetchCartItems() {
-//       const data = await cartService.getCartItemsByUserId(user.user_id, loggedinUser);
-//       console.log("cart items", data)
-//       setCartItems(data);
-//     }
-//     fetchCartItems();
-// }, [loggedinUser, user.user_id])
-
+  });
+  // Fetch cart items from an API
+  // useEffect(() => {
+  //   async function fetchCartItems() {
+  //       const data = await cartService.getCartItemsByUserId(user.user_id, loggedinUser);
+  //       console.log("cart items", data)
+  //       setCartItems(data);
+  //     }
+  //     fetchCartItems();
+  // }, [loggedinUser, user.user_id])
 
   if (!product) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Product not found</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            Product not found
+          </h2>
           <button
-            onClick={() => navigate('/')}
+            onClick={() => navigate("/")}
             className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
           >
             Back to Home
@@ -60,29 +60,33 @@ useEffect(() => {
       </div>
     );
   }
-const formData = {
-  user_id: user.user_id,
-  product_id: product.id,
-  quantity: quantity
 
-}
-// console.log("cart items",cartItems)
+
   const handleAddToCart = () => {
-    if (isLogged) {
-      // addToCart(cartItems);
+    if (isLogged && user) {
+      const formData = {
+        user_id: user.user_id,
+        product_id: product.id,
+        quantity: quantity,
+      };
+     
       // Call the addToCart function from cartService
-      const newProduct = cartService.addToCart(formData, loggedinUser)
-    newProduct.then(response => response.json())
-    .then(data => { console.log(data);
-    })
-    .catch(error => { console.error('Error:', error); });
-      console.log('Product added to cart:', product);
+      const newProduct = cartService.addToCart(formData, loggedinUser);
+      newProduct
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+      console.log("Product added to cart:", product);
 
       // You could add a toast notification here
       navigate(`/cart/${user.user_id}`, { replace: true });
       window.location.reload();
     } else {
-      navigate('/login');
+      navigate("/login");
     }
   };
 
@@ -105,7 +109,7 @@ const formData = {
               <h1 className="text-3xl font-bold text-gray-900 mb-4">
                 {product.name}
               </h1>
-              
+
               <div className="text-3xl font-bold text-blue-600 mb-6">
                 ${product.price}
               </div>
@@ -116,7 +120,9 @@ const formData = {
 
               {/* Quantity Selector */}
               <div className="flex items-center mb-6">
-                <label className="text-gray-700 font-medium mr-4">Quantity:</label>
+                <label className="text-gray-700 font-medium mr-4">
+                  Quantity:
+                </label>
                 <div className="flex items-center border border-gray-300 rounded-md">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -137,7 +143,7 @@ const formData = {
               </div>
 
               {/* Add to Cart Button */}
-             
+
               <button
                 onClick={handleAddToCart}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition-colors duration-200 mb-4"
@@ -147,7 +153,7 @@ const formData = {
 
               {/* Back Button */}
               <button
-                onClick={() => navigate('/')}
+                onClick={() => navigate("/")}
                 className="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-3 px-6 rounded-lg transition-colors duration-200"
               >
                 Back to Products

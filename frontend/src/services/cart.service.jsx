@@ -30,10 +30,41 @@ const getCartItemsByUserId = async (userId, token) => {
   return data;
 }
 
+// function to remove item from cart
+const removeCartItem = async (userId, productId, token) => {
+  const requestOptions = {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-access-token': token
+    }
+   
+  };
+  const response = await fetch(`${api_url}/api/cart/${userId}/${productId}`, requestOptions);
+  return response;
+}
+
+// function to update cart item quantity
+const updateCart = async (userId, productId,quantity, token) => {
+  const requestOptions = {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-access-token': token
+    },
+    body: JSON.stringify({ user_id: userId, product_id: productId, quantity: quantity })
+   
+  };
+  const response = await fetch(`${api_url}/api/cart`, requestOptions);
+  return response;
+}
+
 // export the functions
 const cartService = {
     addToCart,
-    getCartItemsByUserId
+    getCartItemsByUserId,
+    removeCartItem,
+    updateCart
 };
 
 export default cartService;

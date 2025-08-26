@@ -39,9 +39,36 @@ async function getCartItemsByUserId(userId) {
     throw err;
   }
 }
+// Function to remove an item from the cart
+async function removeCartItem(userId, productId) {
+  try {
+    const deleteQuery = "DELETE FROM cart WHERE user_id = ? AND id = ?";
+    const deleteResult = await conn.query(deleteQuery, [userId, productId]);
+    console.log(deleteResult)
+    return deleteResult.affectedRows === 1;
+  } catch (err) {
+    console.error("Error removing cart item:", err);
+    throw err;
+  }
+}
+// Function to update the quantity of a cart item (not used in current controller but useful for completeness)
+async function updateCartItem(userId, productId, quantity) {
+  console.log(userId, productId, quantity)
+  try {
+    const query = "UPDATE cart SET quantity = ? WHERE user_id = ? AND id = ?";
+    const result = await conn.query(query, [quantity, userId, productId]);
+   console.log(result)
+    return result.affectedRows > 0;
+  } catch (err) {
+    console.error("Error updating cart item:", err);
+    throw err;
+  }
+}
 
 // Export the functions for use in the controller
 module.exports = {
   addToCart,
-  getCartItemsByUserId
+  getCartItemsByUserId,
+  removeCartItem,
+  updateCartItem
 };

@@ -1,10 +1,14 @@
 import { useCart } from '../context/useCart';
 import { Link } from 'react-router-dom';
+// Import the custom context hook
+import { useAuth } from "../context/AuthContext";
 // Import from the env 
 const api_url = import.meta.env.VITE_API_URL;
 
 const Cart = () => {
   const { cart, removeFromCart, updateQuantity, getCartTotal } = useCart();
+    // Use the custom hook to access the data in the context
+  const { user } = useAuth();
 
   if (cart.length === 0) {
     return (
@@ -23,7 +27,7 @@ const Cart = () => {
       </div>
     );
   }
-
+let quantity = '';
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -56,7 +60,7 @@ const Cart = () => {
                 {/* Quantity Controls */}
                 <div className="flex items-center space-x-2">
                   <button
-                    onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                    onClick={() => updateQuantity(user.user_id, item.id, Math.max(1, item.quantity - 1))}
                     className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-gray-100"
                   >
                     -
@@ -65,7 +69,7 @@ const Cart = () => {
                     {item.quantity}
                   </span>
                   <button
-                    onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                    onClick={() => updateQuantity(user.user_id, item.id, item.quantity + 1)}
                     className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-gray-100"
                   >
                     +
@@ -81,7 +85,7 @@ const Cart = () => {
 
                 {/* Remove Button */}
                 <button
-                  onClick={() => removeFromCart(item.id)}
+                  onClick={() => removeFromCart(user.user_id,item.id)}
                   className="text-red-500 hover:text-red-700 p-2"
                   title="Remove item"
                 >
