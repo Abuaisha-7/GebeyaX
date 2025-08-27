@@ -5,7 +5,7 @@ import loginService from "../services/login.service";
 // Import the custom context hook
 import { useAuth } from "../../src/context/AuthContext";
 // Import the logo image
-import Logo from "../../public/GebeyaX.png";
+import Logo from "/GebeyaX.png";
 import { useState } from "react";
 
 const Navbar = () => {
@@ -34,7 +34,7 @@ const Navbar = () => {
   
 
   return (
-    <nav className="bg-white shadow-lg border-b border-gray-200">
+    <nav className="fixed top-0 left-0 w-full z-50 bg-white shadow-lg border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}

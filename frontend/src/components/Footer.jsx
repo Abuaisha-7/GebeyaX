@@ -1,6 +1,6 @@
 import React from 'react'
 // Import the logo image
-import Logo from "../../public/GebeyaX.png";
+import Logo from "/GebeyaX.png";
 import { Link } from 'react-router-dom';
 
 function Footer() {

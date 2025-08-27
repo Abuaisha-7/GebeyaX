@@ -1,10 +1,10 @@
-// import ProductCard from '../components/ProductCard';
+
 import Products from '../components/Products';
-import { products } from '../data/products';
+import React from 'react';
 
 const Home = () => {
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 py-8 my-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero Section */}
         <div className="text-center mb-12">

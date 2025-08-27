@@ -42,9 +42,11 @@ function CartProvider({ children }) {
   };
 
   const updateQuantity = (userId, productId, quantity) => {
-    cartService.updateCart(userId,productId,quantity, user.token);
+    cartService.updateCart(userId, productId, quantity, user.token);
     setCart((prevCart) =>
-      prevCart.map((item) => (item.id === productId ? { ...item, quantity } : item))
+      prevCart.map((item) =>
+        item.id === productId ? { ...item, quantity } : item
+      )
     );
   };
 

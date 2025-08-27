@@ -35,7 +35,7 @@ async function createProduct(formData, image) {
 async function getProducts() {
   try {
     // Query to get all products
-    const query = "SELECT * FROM products";
+    const query = "SELECT products.*, categories.name AS categories_name  FROM products JOIN categories ON products.category_id = categories.id";
     const rows = await conn.query(query);
     console.log("Products fetched:", rows);
     // Check if rows are returned

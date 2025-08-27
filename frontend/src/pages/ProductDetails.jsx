@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useCart } from "../context/useCart.js";
+
 import productService from "../services/product.service";
 // import the cart service
 import cartService from "../services/cart.service.jsx";
@@ -12,9 +12,9 @@ const api_url = import.meta.env.VITE_API_URL;
 const ProductDetails = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
-  const [cartItems, setCartItems] = useState([]);
+ 
   const navigate = useNavigate();
-  const { addToCart } = useCart();
+
   const [quantity, setQuantity] = useState(1);
   // Use the custom hook to access the data in the context
   const { isLogged, user } = useAuth();
@@ -33,15 +33,7 @@ const ProductDetails = () => {
     }
     fetchProduct();
   });
-  // Fetch cart items from an API
-  // useEffect(() => {
-  //   async function fetchCartItems() {
-  //       const data = await cartService.getCartItemsByUserId(user.user_id, loggedinUser);
-  //       console.log("cart items", data)
-  //       setCartItems(data);
-  //     }
-  //     fetchCartItems();
-  // }, [loggedinUser, user.user_id])
+ 
 
   if (!product) {
     return (
@@ -91,7 +83,7 @@ const ProductDetails = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 py-8 my-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white rounded-lg shadow-lg overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
