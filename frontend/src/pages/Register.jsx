@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import registerService from "../services/register.service";
 import { FadeLoader } from "react-spinners";
+// Import the logo image
+import Logo from "/GebeyaX.png";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -102,8 +104,8 @@ const Register = () => {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div>
-          <div className="mx-auto h-12 w-12 bg-blue-600 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-xl">E</span>
+          <div className="mx-auto h-20 w-20 bg-blue-600 rounded-lg flex items-center justify-center">
+             <img src={Logo} alt="Logo" className="" />
           </div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             Create your account

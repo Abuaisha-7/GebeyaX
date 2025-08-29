@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import productService from "../../../services/product.service";
+import { Package, Search, Plus, Filter, AlertTriangle } from "lucide-react";
 // Import from the env
 const api_url = import.meta.env.VITE_API_URL;
 
@@ -47,32 +48,45 @@ function ProductList() {
   return (
     <>
      {/* Search & Filter Controls */}
-        <div className="flex flex-col md:flex-row md:items-center md: justify-around mb-4">
-          <input
-            type="text"
-            placeholder="Search products..."
-            value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
-              setCurrentPage(1); // reset pagination on search
-            }}
-            className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <select
-            value={filterCategory}
-            onChange={(e) => {
-              setFilterCategory(e.target.value);
-              setCurrentPage(1); // reset pagination on filter
-            }}
-            className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            {categories.map((cat, idx) => (
-              <option key={idx} value={cat}>
-                {cat}
-              </option>
-            ))}
-          </select>
+        
+      <div className="rounded-xl bg-white shadow-md p-6">
+        {/* Controls Wrapper */}
+        <div className="flex flex-col sm:flex-row gap-4">
+          {/* Search Input */}
+          <div className="relative w-full md:flex-[3] sm:w-1/2">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search products..."
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setCurrentPage(1); // reset pagination on search
+              }}
+              className="w-full border border-gray-300 rounded-lg pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+
+          {/* Category Filter */}
+          <div className="w-full md:flex-[0.5] sm:w-1/3">
+            <select
+              value={filterCategory}
+              onChange={(e) => {
+                setFilterCategory(e.target.value);
+                setCurrentPage(1); // reset pagination on filter
+              }}
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+              {categories.map((cat, idx) => (
+                <option key={idx} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
+      </div>
+
       <div className="overflow-x-auto">
        
 
@@ -138,8 +152,9 @@ function ProductList() {
           </tbody>
         </table>
       </div>
+
       {/* Pagination Controls */}
-      <div className="flex justify-center items-center mt-4 gap-2">
+      <div className="flex justify-center items-center py-10 mt-4 gap-2">
         <button
           disabled={currentPage === 1}
           onClick={() => setCurrentPage((prev) => prev - 1)}
