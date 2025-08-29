@@ -12,6 +12,7 @@ import Admin from './pages/admin/Admin';
 import AddProduct from './pages/admin/AddProduct';
 import Products from './pages/admin/Products';
 import Footer from './components/Footer';
+import EditProduct from './pages/admin/EditProduct';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
               <Route path="/admin/add-product" element={<AddProduct />} />
               {/* Add other admin routes as needed */}
               <Route path='/admin/products' element={<Products />} />
+              <Route path='/admin/products/edit-product/:id' element={<EditProduct />} />
             </Routes>
           </main>
           <Footer/>

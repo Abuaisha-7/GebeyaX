@@ -52,11 +52,27 @@ const getProductById = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 }
+// Handle the delete product by id request
+const deleteProduct = async (req, res) => {
+  const productId = req.params.id;
+  try {
+    const result = await productService.deleteProduct(productId);
+    if (result) {
+      res.status(200).json({ message: "Product deleted successfully" });
+    } else {
+      res.status(404).json({ message: "Product not found" });
+    }
+  } catch (error) {
+    console.error("Error deleting product:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
 
 // Export the functions
 module.exports = {
   addProduct,
   getProducts,
-  getProductById
+  getProductById,
+  deleteProduct,
   // Other functions can be added here as needed
 };

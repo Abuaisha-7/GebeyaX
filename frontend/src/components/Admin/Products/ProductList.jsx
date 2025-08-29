@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import productService from "../../../services/product.service";
 import { Package, Search, Plus, Filter, AlertTriangle } from "lucide-react";
 // Import from the env
@@ -6,6 +7,7 @@ const api_url = import.meta.env.VITE_API_URL;
 
 function ProductList() {
   // Component logic will go here
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
   const [filterCategory, setFilterCategory] = useState("All");
@@ -22,6 +24,13 @@ function ProductList() {
     }
     fetchProducts();
   }, []);
+
+  const removeProduct = async (productId) => {
+    if (window.confirm("Are you sure you want to delete this product?")) {
+      await productService.deleteProduct(productId);
+      setProducts(products.filter((p) => p.id !== productId));
+    }
+  };
 
   // Filter products
   const filteredProducts = products.filter((p) => {
@@ -47,8 +56,8 @@ function ProductList() {
 
   return (
     <>
-     {/* Search & Filter Controls */}
-        
+      {/* Search & Filter Controls */}
+
       <div className="rounded-xl bg-white shadow-md p-6">
         {/* Controls Wrapper */}
         <div className="flex flex-col sm:flex-row gap-4">
@@ -88,8 +97,6 @@ function ProductList() {
       </div>
 
       <div className="overflow-x-auto">
-       
-
         {/* Product Table */}
         <table className="min-w-full border border-gray-200 bg-white shadow-md rounded-lg">
           <thead className="bg-gray-100">
@@ -140,10 +147,14 @@ function ProductList() {
                   {product.stock_quantity}
                 </td>
                 <td className="px-4 py-2 text-center">
-                  <button className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-xs mr-2">
+                  <button className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-xs mr-2"
+                  
+                  onClick={() => {navigate(`/admin/products/edit-product/${product.id}`)}}>
                     Edit
                   </button>
-                  <button className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-xs">
+                  <button className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-xs"
+                  onClick={() => { removeProduct(product.id) }}
+                  >
                     Delete
                   </button>
                 </td>

@@ -66,6 +66,23 @@ async function getProductById(productId) {
     throw err; // Rethrow the error for handling in the controller
   }
 }
+// A function to delete a product by id
+async function deleteProduct(productId) {
+  try {
+    // Query to delete a product by id
+    const query = "DELETE FROM products WHERE id = ?";
+    const rows = await conn.query(query, [productId]);
+    // Check if a product is deleted
+    if (rows.affectedRows > 0) {
+      return true; // Product deleted successfully
+    } else {
+      return false; // Product not found
+    }
+  } catch (err) {
+    console.error("Error deleting product:", err);
+    throw err; // Rethrow the error for handling in the controller
+  }
+}
 
 
 
@@ -75,5 +92,6 @@ async function getProductById(productId) {
 module.exports = {
 createProduct,
 getProducts,
-getProductById
+getProductById,
+deleteProduct
   };

@@ -47,6 +47,17 @@ const getProductById = async (id) => {
   const data = await response.json();
   return data;
 }
+// A function to send delete request to delete product
+const deleteProduct = async (productId) => {
+  const requestOptions = {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  };
+  const response = await fetch(`${api_url}/api/delete_product/${productId}`, requestOptions);
+  return response;
+}
 // const getAllEmployees = async (token) => {
 //   // console.log(token);
 //   const requestOptions = {
@@ -96,6 +107,7 @@ const getProductById = async (id) => {
 const productService = {
   addProduct,
   getProducts,
-  getProductById
+  getProductById,
+  deleteProduct,
 }
 export default productService; 

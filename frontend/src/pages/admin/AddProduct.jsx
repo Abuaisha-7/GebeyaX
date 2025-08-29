@@ -15,7 +15,7 @@ function AddProduct() {
               </div>
             </div>
           </div>
-        </div>
+    </div>
   )
 }
 

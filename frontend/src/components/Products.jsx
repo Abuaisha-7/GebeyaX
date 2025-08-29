@@ -44,7 +44,19 @@ function Products() {
 
   return (
     <div className="container mx-auto p-8 space-y-6">
-      {/* Search & Filter Controls */}
+ 
+
+      {currentProducts.length === 0 ? (
+        <div className="text-center py-12">
+          <div className="text-gray-400 text-6xl mb-4">📦</div>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">
+            No products found
+          </h3>
+          <p className="text-gray-500">Check back later for new arrivals!</p>
+        </div>
+      ) : (
+        <>
+     {/* Search & Filter Controls */}
       <div className="rounded-xl bg-white shadow-md p-6">
         {/* Controls Wrapper */}
         <div className="flex flex-col sm:flex-row gap-4">
@@ -120,15 +132,7 @@ function Products() {
           Next
         </button>
       </div>
-
-      {currentProducts.length === 0 && (
-        <div className="text-center py-12">
-          <div className="text-gray-400 text-6xl mb-4">📦</div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">
-            No products found
-          </h3>
-          <p className="text-gray-500">Check back later for new arrivals!</p>
-        </div>
+        </>
       )}
     </div>
   );

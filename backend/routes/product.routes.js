@@ -26,6 +26,8 @@ router.post("/api/add_product", upload.single('image'), productController.addPro
 router.get("/api/products", productController.getProducts);
 // Create a route to handle the get product by id request on get
 router.get("/api/product/:id", productController.getProductById);
+// Create a route to handle the delete product by id request on delete
+router.delete("/api/delete_product/:id", productController.deleteProduct);
 
 // Export the router
 module.exports = router;

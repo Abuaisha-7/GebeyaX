@@ -4,9 +4,10 @@ import productService from "../../../services/product.service";
 // Import the useAuth hook
 import { useAuth } from "../../../context/AuthContext";
 import { FadeLoader } from "react-spinners";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function AddProduct() {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [product, setProduct] = useState({
     name: "",
@@ -86,7 +87,7 @@ export default function AddProduct() {
         });
         setLoading(false);
         alert("Product added successfully!");
-       Navigate("/admin/products");
+       navigate("/admin/products");
       })
       .catch((data) => {
         console.error(data.message);
